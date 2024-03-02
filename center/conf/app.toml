@@ -1,0 +1,11 @@
+
+# 日志配置
+[log]
+fileName = "log/runtime.log"
+maxSize = 10
+maxAge = 3
+maxBackups = 3
+level = 1
+
+
+
