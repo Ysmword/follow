@@ -20,7 +20,8 @@ var (
 )
 
 type Config struct {
-	Log LogConfig
+	Log    LogConfig
+	Server ServerConfig
 }
 
 type LogConfig struct {
@@ -31,6 +32,10 @@ type LogConfig struct {
 	Level      int    `toml:"level"`
 }
 
+type ServerConfig struct {
+	Addr string `toml:"addr"`
+}
+
 func LoadConfig(filePath string) error {
 	var c Config
 	if _, err := toml.DecodeFile(filePath, &c); err != nil {
@@ -39,6 +44,10 @@ func LoadConfig(filePath string) error {
 
 	if err := c.Log.check(); err != nil {
 		return fmt.Errorf("check log config failed: %w", err)
+	}
+
+	if err := c.Server.check(); err != nil {
+		return fmt.Errorf("check server config failed: %w", err)
 	}
 
 	appConf = &c
@@ -61,9 +70,23 @@ func (l *LogConfig) check() error {
 	return nil
 }
 
+func (s *ServerConfig) check() error {
+	if s.Addr == "" {
+		return fmt.Errorf("addr [%s] expect", s.Addr)
+	}
+	return nil
+}
+
 func GetLogConfig() (LogConfig, error) {
 	if appConf == nil {
 		return LogConfig{}, ErrNotInitialized
 	}
 	return appConf.Log, nil
+}
+
+func GetServerConfig() (ServerConfig, error) {
+	if appConf == nil {
+		return ServerConfig{}, ErrNotInitialized
+	}
+	return appConf.Server, nil
 }

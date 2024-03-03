@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/follow/config"
+	"github.com/follow/router"
 	"github.com/follow/utils/log"
 	"github.com/follow/utils/pid"
 	"log/slog"
@@ -33,13 +34,24 @@ func main() {
 		return
 	}
 
+	// 	初始化log
 	lc, err := config.GetLogConfig()
 	if err != nil {
 		fmt.Println("get log config failed:", err)
+		return
 	}
 	log.InitLog(lc.FileName, lc.Level, lc.MaxSize, lc.MaxBackups, lc.MaxAge)
 
-	slog.Info("follow启动")
+	// 初始化server
+	sc, err := config.GetServerConfig()
+	if err != nil {
+		slog.Error(fmt.Sprintf("get server failed: %v", err))
+		return
+	}
+	if err := router.GraceFulStartServer(sc.Addr); err != nil {
+		slog.Error(fmt.Sprintf("graceful start server failed: %v", err))
+		return
+	}
 }
 
 func createPid() error {

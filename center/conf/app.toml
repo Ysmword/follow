@@ -8,4 +8,6 @@ maxBackups = 3
 level = 1
 
 
+[server]
+addr=":8080"
 
