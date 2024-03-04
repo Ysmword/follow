@@ -7,9 +7,10 @@ package router
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"log/slog"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 func registerMiddleware(r *gin.Engine) {

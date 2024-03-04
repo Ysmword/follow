@@ -3,13 +3,14 @@ package main
 import (
 	"errors"
 	"fmt"
+	"log/slog"
+	"os"
+	"path"
+
 	"github.com/follow/config"
 	"github.com/follow/router"
 	"github.com/follow/utils/log"
 	"github.com/follow/utils/pid"
-	"log/slog"
-	"os"
-	"path"
 )
 
 // pid

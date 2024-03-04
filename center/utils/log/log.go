@@ -6,8 +6,9 @@
 package log
 
 import (
-	"gopkg.in/natefinch/lumberjack.v2"
 	"log/slog"
+
+	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 // InitLog 初始化日志全局变量，默认不压缩文件和使用本地时间创建时间戳，日志支持切割

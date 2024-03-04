@@ -8,11 +8,12 @@ package pid
 import (
 	"errors"
 	"fmt"
-	"github.com/follow/utils/dir"
 	"os"
 	"path"
 	"strconv"
 	"strings"
+
+	"github.com/follow/utils/dir"
 )
 
 const (

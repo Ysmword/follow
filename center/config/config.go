@@ -8,6 +8,7 @@ package config
 import (
 	"errors"
 	"fmt"
+
 	"github.com/BurntSushi/toml"
 )
 
