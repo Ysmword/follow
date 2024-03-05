@@ -67,7 +67,7 @@ func createPid() error {
 	}
 
 	if errors.Is(err, pid.ErrPidAlreadyExist) {
-		return fmt.Errorf("pid [%s] already exist", id)
+		return fmt.Errorf("pid [%d] already exist", id)
 	}
 	return err
 }
