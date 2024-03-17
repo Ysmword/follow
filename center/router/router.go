@@ -17,6 +17,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/follow/controller"
 	"github.com/gin-gonic/gin"
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 )
@@ -40,6 +41,14 @@ func initRouter() (*gin.Engine, error) {
 	router.GET("/", func(c *gin.Context) {
 		c.String(200, "start")
 	})
+
+	// user
+	router.POST("/userExist", controller.UserExist)
+	router.POST("/addUser", controller.AddUser)
+
+	// script
+	router.POST("/getUserAllScript", controller.GetUserAllScript)
+	router.POST("/addScript", controller.AddScript)
 
 	return router, nil
 }

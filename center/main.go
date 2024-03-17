@@ -8,6 +8,7 @@ import (
 	"path"
 
 	"github.com/follow/config"
+	"github.com/follow/model"
 	"github.com/follow/router"
 	"github.com/follow/utils/log"
 	"github.com/follow/utils/pid"
@@ -42,6 +43,17 @@ func main() {
 		return
 	}
 	log.InitLog(lc.FileName, lc.Level, lc.MaxSize, lc.MaxBackups, lc.MaxAge)
+
+	// 初始化mysql数据库
+	mc, err := config.GetMysqlConfig()
+	if err != nil {
+		fmt.Println("get mysql config failed:", err)
+		return
+	}
+	if err := model.InitMysql(mc); err != nil {
+		fmt.Println("init mysql failed:", err)
+		return
+	}
 
 	// 初始化server
 	sc, err := config.GetServerConfig()

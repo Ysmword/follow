@@ -10,7 +10,14 @@ import (
 	"log/slog"
 	"time"
 
+	"github.com/follow/utils/response"
 	"github.com/gin-gonic/gin"
+)
+
+// 硬编码权限验证
+const (
+	username = "follow"
+	password = "follow@123456"
 )
 
 func registerMiddleware(r *gin.Engine) {
@@ -18,8 +25,8 @@ func registerMiddleware(r *gin.Engine) {
 	defer slog.Info("register middleware end")
 
 	r.Use(setLogFormat())
+	r.Use(auth)
 	r.Use(gin.Recovery())
-	return
 }
 
 func setLogFormat() gin.HandlerFunc {
@@ -36,4 +43,14 @@ func setLogFormat() gin.HandlerFunc {
 			params.ErrorMessage,
 		)
 	})
+}
+
+func auth(c *gin.Context) {
+	u := c.Query("username")
+	p := c.Query("pwd")
+	if u != username || p != password {
+		c.Abort()
+		response.FailWithReason(c, "权限验证失败")
+	}
+	c.Next()
 }

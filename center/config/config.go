@@ -10,6 +10,7 @@ import (
 	"fmt"
 
 	"github.com/BurntSushi/toml"
+	"github.com/follow/model"
 )
 
 var (
@@ -23,6 +24,7 @@ var (
 type Config struct {
 	Log    LogConfig
 	Server ServerConfig
+	Mysql  model.MysqlConfig
 }
 
 type LogConfig struct {
@@ -49,6 +51,10 @@ func LoadConfig(filePath string) error {
 
 	if err := c.Server.check(); err != nil {
 		return fmt.Errorf("check server config failed: %w", err)
+	}
+
+	if err := c.Mysql.Check(); err != nil {
+		return fmt.Errorf("check mysql config failed: %w", err)
 	}
 
 	appConf = &c
@@ -90,4 +96,11 @@ func GetServerConfig() (ServerConfig, error) {
 		return ServerConfig{}, ErrNotInitialized
 	}
 	return appConf.Server, nil
+}
+
+func GetMysqlConfig() (model.MysqlConfig, error) {
+	if appConf == nil {
+		return model.MysqlConfig{}, ErrNotInitialized
+	}
+	return appConf.Mysql, nil
 }

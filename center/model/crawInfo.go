@@ -13,7 +13,7 @@ type CrawlerRes struct {
 
 // Get 分页获取爬虫结果
 func (c *CrawlerRes) Get(page, pageSize int64) ([]CrawlerRes, int64) {
-	return nil, nil
+	return nil, 0
 }
 
 // DeleteByID 批量根据ID删除
