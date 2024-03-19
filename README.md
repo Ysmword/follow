@@ -9,7 +9,7 @@ go.1.22
 
 鸿蒙next
 
-vue
+angular
 
 mysql
 
