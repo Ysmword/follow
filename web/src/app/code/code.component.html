@@ -1,1 +1,65 @@
-this is a test
+<div class="code">
+    <form nz-form>
+        <div nz-row>
+            <nz-form-item>
+                <nz-form-label>脚本名称</nz-form-label>
+                <nz-form-control>
+                    <input class="i_codeName" nz-input placeholder="请输入脚本名称" nzSize="small" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>内容分类</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzShowSearch nzAllowClear [nzDropdownRender]="renderTemplate" nzPlaceHolder="请选择内容类别">
+                        <nz-option *ngFor="let item of listOfItem" [nzLabel]="item" [nzValue]="item"></nz-option>
+                    </nz-select>
+                    <ng-template #renderTemplate>
+                        <div class="container">
+                            <input type="text" nz-input #inputElement />
+                            <a class="add-item" (click)="addItem(inputElement)">
+                                添加类别
+                            </a>
+                        </div>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div>
+            <nz-form-item>
+                <nz-form-label>代码</nz-form-label>
+                <nz-form-control>
+                    <ngx-codemirror [(ngModel)]="codeContent"
+                    [options]="{
+                        lineNumbers: true,
+                        theme: 'material',
+                        mode: 'go',
+                        lineWrapping: true
+                      }"></ngx-codemirror>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+
+        <div>
+            <nz-form-item>
+                <nz-form-label>上传代码</nz-form-label>
+                <nz-form-control>
+                    <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76" nzDirectory>
+                        <button nz-button>
+                          <span nz-icon nzType="upload"></span>
+                          Upload Directory
+                        </button>
+                      </nz-upload>
+                  
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+
+        <div>
+            <nz-form-item>
+                <nz-form-control>
+                  <button nz-button nzType="primary">提交</button>
+                </nz-form-control>
+              </nz-form-item>
+        </div>
+    </form>
+</div>

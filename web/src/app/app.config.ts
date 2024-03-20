@@ -16,7 +16,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideNzI18n(zh_CN),
-    importProvidersFrom(FormsModule),
+    importProvidersFrom(FormsModule,NgModel),
     provideAnimationsAsync(),
     provideHttpClient(),
   ]

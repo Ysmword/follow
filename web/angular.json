@@ -26,9 +26,12 @@
             ],
             "styles": [
               "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/codemirror/lib/codemirror.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/codemirror/lib/codemirror.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -86,7 +89,8 @@
             ],
             "styles": [
               "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/codemirror/lib/codemirror.css"
             ],
             "scripts": []
           }
