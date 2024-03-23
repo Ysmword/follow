@@ -1,13 +1,16 @@
+
+
 <div class="code">
     <form nz-form>
-        <div nz-row>
-            <nz-form-item>
+        <div nz-row class="code_base_info">
+            <nz-form-item style="margin-right: 20px;">
                 <nz-form-label>脚本名称</nz-form-label>
                 <nz-form-control>
                     <input class="i_codeName" nz-input placeholder="请输入脚本名称" nzSize="small" />
                 </nz-form-control>
             </nz-form-item>
-            <nz-form-item>
+            
+            <nz-form-item style="margin-right: 20px;">
                 <nz-form-label>内容分类</nz-form-label>
                 <nz-form-control>
                     <nz-select nzShowSearch nzAllowClear [nzDropdownRender]="renderTemplate" nzPlaceHolder="请选择内容类别">
@@ -23,23 +26,30 @@
                     </ng-template>
                 </nz-form-control>
             </nz-form-item>
-        </div>
-        <div>
-            <nz-form-item>
-                <nz-form-label>代码</nz-form-label>
+
+            <nz-form-item >
+                <nz-form-label>语言类型</nz-form-label>
                 <nz-form-control>
-                    <ngx-codemirror [(ngModel)]="codeContent"
-                    [options]="{
-                        lineNumbers: true,
-                        theme: 'material',
-                        mode: 'go',
-                        lineWrapping: true
-                      }"></ngx-codemirror>
+                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择语言类型">
+                        <nz-option *ngFor="let item of listOfItem" [nzLabel]="item" [nzValue]="item"></nz-option>
+                    </nz-select>
                 </nz-form-control>
             </nz-form-item>
         </div>
 
-        <div>
+
+        <div class="code_contetn">
+            <nz-form-item>
+                <nz-form-label>代码</nz-form-label>
+                <nz-form-control>
+                    <ngx-codemirror [(ngModel)]="codeContent"
+                    [ngModelOptions]="{standalone: true}"
+                    [options]="codeOption"></ngx-codemirror>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+
+        <div class="code_file">
             <nz-form-item>
                 <nz-form-label>上传代码</nz-form-label>
                 <nz-form-control>
@@ -48,13 +58,12 @@
                           <span nz-icon nzType="upload"></span>
                           Upload Directory
                         </button>
-                      </nz-upload>
-                  
+                      </nz-upload>          
                 </nz-form-control>
             </nz-form-item>
         </div>
 
-        <div>
+        <div class="code_submit">
             <nz-form-item>
                 <nz-form-control>
                   <button nz-button nzType="primary">提交</button>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component,ViewChild } from '@angular/core';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzFormModule } from 'ng-zorro-antd/form';
@@ -7,6 +7,12 @@ import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { FormsModule } from '@angular/forms';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import 'codemirror/theme/blackboard.css';
+import 'codemirror/addon/hint/sql-hint.js';
+import 'codemirror/mode/sql/sql';
+import 'codemirror/addon/hint/show-hint.css';
+import 'codemirror/addon/hint/show-hint.js';
 
 @Component({
   selector: 'app-code',
@@ -20,6 +26,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
     FormsModule,
     NzUploadModule,
     NzButtonModule,
+    NzGridModule,
   ],
   templateUrl: './code.component.html',
   styleUrl: './code.component.css'
@@ -35,5 +42,14 @@ export class CodeComponent {
       if (this.listOfItem.indexOf(value) === -1) {
         this.listOfItem = [...this.listOfItem, input.value];
       }
+  }
+
+  public codeOption = {
+    lineNumbers: true,
+    lineWrapping: true,
+    tabSize: 2,
+    theme: 'blackboard',
+    mode:  "text/x-mysql",          //定义mode
+    extraKeys: {"Ctrl": "autocomplete"},   //自动提示配置
   }
 }
