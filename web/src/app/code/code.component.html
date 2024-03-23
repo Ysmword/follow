@@ -1,8 +1,8 @@
 
 
-<div class="code">
+<div class="script">
     <form nz-form>
-        <div nz-row class="code_base_info">
+        <div nz-row class="script_base_info">
             <nz-form-item style="margin-right: 20px;">
                 <nz-form-label>脚本名称</nz-form-label>
                 <nz-form-control>
@@ -37,8 +37,7 @@
             </nz-form-item>
         </div>
 
-
-        <div class="code_contetn">
+        <div class="script_contetn">
             <nz-form-item>
                 <nz-form-label>代码</nz-form-label>
                 <nz-form-control>
@@ -49,7 +48,7 @@
             </nz-form-item>
         </div>
 
-        <div class="code_file">
+        <div class="script_file">
             <nz-form-item>
                 <nz-form-label>上传代码</nz-form-label>
                 <nz-form-control>
@@ -63,10 +62,10 @@
             </nz-form-item>
         </div>
 
-        <div class="code_submit">
+        <div class="script_submit">
             <nz-form-item>
                 <nz-form-control>
-                  <button nz-button nzType="primary">提交</button>
+                  <button nz-button nzType="primary" (click)="addScript()">提交</button>
                 </nz-form-control>
               </nz-form-item>
         </div>

@@ -13,6 +13,9 @@ import 'codemirror/addon/hint/sql-hint.js';
 import 'codemirror/mode/sql/sql';
 import 'codemirror/addon/hint/show-hint.css';
 import 'codemirror/addon/hint/show-hint.js';
+import { ScriptService } from '../services/script.service';
+import { script } from '../../class/script';
+import { response } from '../../class/response';
 
 @Component({
   selector: 'app-code',
@@ -32,6 +35,11 @@ import 'codemirror/addon/hint/show-hint.js';
   styleUrl: './code.component.css'
 })
 export class CodeComponent {
+
+  constructor(
+    private scriptService:ScriptService
+  ){}
+
   codeName?: string; // 脚本名称
   codeContent?:string; // 脚本内容
 
@@ -51,5 +59,28 @@ export class CodeComponent {
     theme: 'blackboard',
     mode:  "text/x-mysql",          //定义mode
     extraKeys: {"Ctrl": "autocomplete"},   //自动提示配置
+  }
+
+  addScript(){
+    var s:script = {
+      id:1,
+      username:"ysm",
+      name:"获取爱奇艺电视",
+      type:"影视",
+      language:"go",
+      code:"test",
+      cycle:30,
+      status:true,
+      create_time:1234,
+      update_time:12344,
+      description:"test",
+    }
+    this.scriptService.addScript(s).subscribe((r:response)=>{
+      if (r.status!==0){
+        console.log(r.msg)
+      }else{
+        console.log("请求成功")
+      }
+    })
   }
 }

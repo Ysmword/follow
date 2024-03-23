@@ -8,9 +8,11 @@ import (
 // Script 脚本
 type Script struct {
 	ID          int64  `json:"id" gorm:"primaryKey"`
-	Username    string `json:"username"`                    // 用户名
-	Name        string `json:"name" gorm:"unique"`          // 脚本名称
-	Type        string `json:"type" gorm:"not null"`        // 脚本类型
+	Username    string `json:"username"`             // 用户名
+	Name        string `json:"name" gorm:"unique"`   // 脚本名称
+	Type        string `json:"type" gorm:"not null"` // 脚本类型
+	Language    string `json:"language"`             // 脚本所属语言
+	Code        string `json:"code"`
 	Cycle       int    `json:"cycle"`                       // 运行周期，默认一个小时，单位s，数据库默认为6min
 	Status      bool   `json:"status"`                      // 脚本状态，true为开启，false为关闭，默认不开启
 	CreateTime  int64  `json:"create_time"`                 // 创建时间
