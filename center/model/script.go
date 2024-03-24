@@ -3,6 +3,8 @@ package model
 import (
 	"fmt"
 	"reflect"
+
+	"github.com/jinzhu/gorm"
 )
 
 // Script 脚本
@@ -73,4 +75,24 @@ func (s *Script) Create() error {
 // Update 更新脚本
 func (s *Script) Update() error {
 	return nil
+}
+
+// Exist 判断脚本是否存在
+func (s *Script) Exist() (bool, error) {
+	cursor, err := getDB()
+	if err != nil {
+		return false, err
+	}
+	scripts := make([]Script, 0)
+	err = cursor.Where("username=? and name=?", s.Username, s.Name).Find(&scripts).Error
+	if gorm.IsRecordNotFoundError(err) {
+		return false, nil
+	}
+	if err != nil {
+		return false, err
+	}
+	if len(scripts) > 0 {
+		return true, nil
+	}
+	return false, nil
 }

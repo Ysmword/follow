@@ -5,7 +5,7 @@ import { routes } from './app.routes';
 import { zh_CN, provideNzI18n } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { FormsModule, NgModel } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
 
@@ -16,7 +16,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideNzI18n(zh_CN),
-    importProvidersFrom(FormsModule,NgModel),
+    importProvidersFrom(FormsModule),
     provideAnimationsAsync(),
     provideHttpClient(),
   ]

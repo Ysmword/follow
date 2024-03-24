@@ -17,7 +17,7 @@ const (
 )
 
 const (
-	DefSuccessFlay = "success"
+	DefSuccessFlag = "success"
 )
 
 func commonResp(status int, msg string, data interface{}) gin.H {
@@ -30,12 +30,12 @@ func commonResp(status int, msg string, data interface{}) gin.H {
 
 // Success 成功响应，不会携带数据
 func Success(c *gin.Context) {
-	c.JSON(http.StatusOK, commonResp(StatusCodeSuccess, DefSuccessFlay, nil))
+	c.JSON(http.StatusOK, commonResp(StatusCodeSuccess, DefSuccessFlag, nil))
 }
 
 // SuccessWithData 成功响应，会携带数据
 func SuccessWithData(c *gin.Context, data interface{}) {
-	c.JSON(http.StatusOK, commonResp(StatusCodeSuccess, DefSuccessFlay, data))
+	c.JSON(http.StatusOK, commonResp(StatusCodeSuccess, DefSuccessFlag, data))
 }
 
 // FailWithReason 失败响应

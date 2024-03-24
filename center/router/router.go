@@ -17,9 +17,10 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/follow/controller"
 	"github.com/gin-gonic/gin"
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
+
+	"github.com/follow/controller"
 )
 
 const (
@@ -49,6 +50,7 @@ func initRouter() (*gin.Engine, error) {
 	// script
 	router.POST("/getUserAllScript", controller.GetUserAllScript)
 	router.POST("/addScript", controller.AddScript)
+	router.POST("/runDebug", controller.RunDebug)
 
 	return router, nil
 }

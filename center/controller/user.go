@@ -9,11 +9,12 @@ import (
 	"fmt"
 	"log/slog"
 
+	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
+
 	"github.com/follow/model"
 	"github.com/follow/utils/response"
 	"github.com/follow/utils/times"
-	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
 )
 
 func bindJsonFail(err error) string {

@@ -1,73 +1,94 @@
-
-
 <div class="script">
-    <form nz-form>
-        <div nz-row class="script_base_info">
-            <nz-form-item style="margin-right: 20px;">
-                <nz-form-label>脚本名称</nz-form-label>
-                <nz-form-control>
-                    <input class="i_codeName" nz-input placeholder="请输入脚本名称" nzSize="small" />
-                </nz-form-control>
-            </nz-form-item>
+    <form nz-form [formGroup]="script">
+        <div nz-col class="script_base_info">
+            <div nz-row class="base_info_one">
+                <nz-form-item class="mr">
+                    <nz-form-label nzRequired>脚本名称</nz-form-label>
+                    <nz-form-control>
+                        <input class="defualt_frame" nz-input placeholder="请输入脚本名称" nzSize="small" formControlName="name" />
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item class="mr">
+                    <nz-form-label nzRequired>内容分类</nz-form-label>
+                    <nz-form-control>
+                        <nz-select class="defualt_frame" formControlName="type" nzShowSearch nzAllowClear [nzDropdownRender]="renderTemplate" nzPlaceHolder="请选择内容类别">
+                            <nz-option *ngFor="let type of scriptTypes" [nzLabel]="type" [nzValue]="type"></nz-option>
+                        </nz-select>
+                        <ng-template #renderTemplate>
+                            <div class="container">
+                                <input type="text" nz-input #inputElement />
+                                <a class="add_script_type" (click)="addScriptType(inputElement)">
+                                    添加
+                                </a>
+                            </div>
+                        </ng-template>
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item class="mr">
+                    <nz-form-label nzRequired>语言类型</nz-form-label>
+                    <nz-form-control>
+                        <nz-select class="defualt_frame" formControlName="languageType" nzShowSearch nzAllowClear nzPlaceHolder="请选择语言类型">
+                            <nz-option *ngFor="let type of languageTypes" [nzLabel]="type" [nzValue]="type"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+
+            </div>
             
-            <nz-form-item style="margin-right: 20px;">
-                <nz-form-label>内容分类</nz-form-label>
-                <nz-form-control>
-                    <nz-select nzShowSearch nzAllowClear [nzDropdownRender]="renderTemplate" nzPlaceHolder="请选择内容类别">
-                        <nz-option *ngFor="let item of listOfItem" [nzLabel]="item" [nzValue]="item"></nz-option>
-                    </nz-select>
-                    <ng-template #renderTemplate>
-                        <div class="container">
-                            <input type="text" nz-input #inputElement />
-                            <a class="add-item" (click)="addItem(inputElement)">
-                                添加类别
-                            </a>
-                        </div>
-                    </ng-template>
-                </nz-form-control>
-            </nz-form-item>
+            <div nz-row class="base_info_two">
+                <nz-form-item class="mr">
+                    <nz-form-label nzRequired>运行周期</nz-form-label>
+                    <nz-form-control>
+                        <input class="defualt_frame" nz-input placeholder="请输入运行周期" nzSize="small" formControlName="cycle" />
+                    </nz-form-control>
+                </nz-form-item>
 
-            <nz-form-item >
-                <nz-form-label>语言类型</nz-form-label>
+                <nz-form-item class="mr">
+                    <nz-form-label nzRequired>运行状态</nz-form-label>
+                    <nz-form-control>
+                        <nz-select class="defualt_frame" formControlName="status" nzShowSearch nzAllowClear nzPlaceHolder="选择是否启用">
+                            <nz-option *ngFor="let option of statusOptions" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+           <div class="base_info_three">
+                <nz-form-item class="mr">
+                    <nz-form-label nzRequired>脚本描述</nz-form-label>
+                    <nz-form-control>
+                        <textarea formControlName="description" style="width: 50%;" nz-input placeholder="请输入相关的描述" nzAutosize></textarea>
+                    </nz-form-control>
+                </nz-form-item>
+           </div>  
+        </div>
+
+        <div class="script_content">
+            <nz-form-item>
+                <nz-form-label nzRequired>脚本代码</nz-form-label>
                 <nz-form-control>
-                    <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择语言类型">
-                        <nz-option *ngFor="let item of listOfItem" [nzLabel]="item" [nzValue]="item"></nz-option>
-                    </nz-select>
+                    <ngx-codemirror formControlName="content" [options]="codeOption"></ngx-codemirror>
                 </nz-form-control>
             </nz-form-item>
         </div>
 
-        <div class="script_contetn">
-            <nz-form-item>
-                <nz-form-label>代码</nz-form-label>
+        <div nz-row class="script_submit">
+            <nz-form-item class="mr">
                 <nz-form-control>
-                    <ngx-codemirror [(ngModel)]="codeContent"
-                    [ngModelOptions]="{standalone: true}"
-                    [options]="codeOption"></ngx-codemirror>
+                    <button class="defualt_button" nz-button nzType="primary" (click)="runDebug()">试运行</button>
                 </nz-form-control>
             </nz-form-item>
-        </div>
 
-        <div class="script_file">
             <nz-form-item>
-                <nz-form-label>上传代码</nz-form-label>
                 <nz-form-control>
-                    <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76" nzDirectory>
-                        <button nz-button>
-                          <span nz-icon nzType="upload"></span>
-                          Upload Directory
-                        </button>
-                      </nz-upload>          
+                    <button class="defualt_button" nz-button nzType="primary" (click)="addScript()">提交</button>
                 </nz-form-control>
             </nz-form-item>
-        </div>
-
-        <div class="script_submit">
-            <nz-form-item>
-                <nz-form-control>
-                  <button nz-button nzType="primary" (click)="addScript()">提交</button>
-                </nz-form-control>
-              </nz-form-item>
         </div>
     </form>
+
+
+    
 </div>

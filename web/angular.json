@@ -30,7 +30,9 @@
               "node_modules/codemirror/lib/codemirror.css"
             ],
             "scripts": [
-              "node_modules/codemirror/lib/codemirror.js"
+              "node_modules/codemirror/lib/codemirror.js",
+              "node_modules/codemirror/mode/go/go.js",
+              "node_modules/codemirror/mode/python/python.js"
             ]
           },
           "configurations": {
