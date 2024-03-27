@@ -1,0 +1,30 @@
+<a nz-button routerLink="/code" routerLinkActive="active" nzType="primary">新增</a>
+<br />
+<br />
+<nz-table #basicTable [nzData]="scripts">
+    <thead>
+      <tr>
+        <th>脚本名称</th>
+        <th>内容分类</th>
+        <th>语言类型</th>
+        <th>运行周期</th>
+        <th>运行状态</th>
+        <th>脚本描述</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td>{{ data.name }}</td>
+        <td>{{ data.type }}</td>
+        <td>{{ data.language }}</td>
+        <td>{{ data.cycle }}</td>
+        <td>{{ data.status }}</td>
+        <td>{{ data.description }}</td>
+        <td>
+          <a style="margin-right: 10px;">修改</a>
+          <a nz-popconfirm nzPopconfirmTitle="确定删除吗?" (nzOnConfirm)="delScript(data.id)">删除</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>

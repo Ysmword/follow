@@ -59,7 +59,11 @@ func (s *Script) GetByUsername() ([]Script, error) {
 
 // Delete 根据ID删除脚本
 func (s *Script) Delete() error {
-	return nil
+	cursor, err := getDB()
+	if err != nil {
+		return err
+	}
+	return cursor.Delete("id=?", s.ID).Error
 }
 
 // Create 创建脚本

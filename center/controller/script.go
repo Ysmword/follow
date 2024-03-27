@@ -107,3 +107,23 @@ func writeFile(filename string, data []byte) error {
 	_, err = file.Write(data)
 	return err
 }
+
+func DeleteScript(c *gin.Context) {
+	s := model.Script{}
+	if err := c.BindJSON(&s); err != nil {
+		response.FailWithReason(c, bindJsonFail(err))
+		return
+	}
+
+	if s.ID <= 0 {
+		response.FailWithReason(c, "请输入脚本ID")
+		return
+	}
+
+	if err := s.Delete(); err != nil {
+		slog.Error(fmt.Sprintf("delete [%+v] failed:", s))
+		response.FailWithReason(c, "删除失败")
+		return
+	}
+	response.Success(c)
+}

@@ -16,6 +16,8 @@ export class ScriptService {
 
   private addApi:string = "/api/addScript?username=follow&pwd=follow@123456";
   private runDebugApi:string = "/api/runDebug?username=follow&pwd=follow@123456"
+  private getApi:string="/api/getUserAllScript?username=follow&pwd=follow@123456"
+  private delApi:string="/api/delScript?username=follow&pwd=follow@123456"
 
   private httpOptions ={
     headers:new HttpHeaders({'content-Type':'application/json'})
@@ -40,5 +42,17 @@ export class ScriptService {
     return this.http.post<response>(this.runDebugApi,s,this.httpOptions).pipe(
       catchError(this.handleError)
     ) 
+  }
+
+  getAllScript(s:script){
+    return this.http.post<response>(this.getApi,s,this.httpOptions).pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  delScript(s:script){
+    return this.http.post<response>(this.delApi,s,this.httpOptions).pipe(
+      catchError(this.handleError)
+    )
   }
 }

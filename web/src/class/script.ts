@@ -9,3 +9,11 @@ export class script {
     status?: boolean;
     description?: string;
 }
+
+
+export class Person {
+    key?: string;
+    name?: string;
+    age?: number;
+    address?: string;
+  }
