@@ -14,10 +14,11 @@ export class ScriptService {
     private http:HttpClient,
   ) { }
 
-  private addApi:string = "/api/addScript?username=follow&pwd=follow@123456";
+  private auApi:string = "/api/auScript?username=follow&pwd=follow@123456";
   private runDebugApi:string = "/api/runDebug?username=follow&pwd=follow@123456"
   private getApi:string="/api/getUserAllScript?username=follow&pwd=follow@123456"
   private delApi:string="/api/delScript?username=follow&pwd=follow@123456"
+  private getByIDApi:string="/api/getScriptByID?username=follow&pwd=follow@123456"
 
   private httpOptions ={
     headers:new HttpHeaders({'content-Type':'application/json'})
@@ -32,8 +33,8 @@ export class ScriptService {
     return throwError(() => new Error('Something bad happened; please try again later.'));
   }
   
-  addScript(s:script){
-    return this.http.post<response>(this.addApi,s,this.httpOptions).pipe(
+  auScript(s:script){
+    return this.http.post<response>(this.auApi,s,this.httpOptions).pipe(
       catchError(this.handleError)
     )
   }
@@ -52,6 +53,13 @@ export class ScriptService {
 
   delScript(s:script){
     return this.http.post<response>(this.delApi,s,this.httpOptions).pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  getScriptByID(id:number){
+    const s:script={id:id}
+    return this.http.post<response>(this.getByIDApi,s,this.httpOptions).pipe(
       catchError(this.handleError)
     )
   }

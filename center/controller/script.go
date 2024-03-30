@@ -41,8 +41,8 @@ func GetUserAllScript(c *gin.Context) {
 	response.FailWithReason(c, fmt.Sprintf("系统bug: %v", err))
 }
 
-// AddScript 添加脚本
-func AddScript(c *gin.Context) {
+// AuScript 添加或更新脚本
+func AuScript(c *gin.Context) {
 	s := model.Script{}
 	if err := c.BindJSON(&s); err != nil {
 		response.FailWithReason(c, bindJsonFail(err))
@@ -55,14 +55,8 @@ func AddScript(c *gin.Context) {
 		return
 	}
 
-	exist, err := s.Exist()
-	if err != nil || exist {
-		response.FailWithReason(c, fmt.Sprintf("查询脚本失败：%v 或者 脚本已经存在：%v", err, exist))
-		return
-	}
-
-	if err := s.Create(); err != nil {
-		response.FailWithReason(c, fmt.Sprintf("创建脚本失败：%v", err))
+	if err := s.CreateOrUpdate(); err != nil {
+		response.FailWithReason(c, fmt.Sprintf("创建或更新脚本失败：%v", err))
 		return
 	}
 
@@ -126,4 +120,23 @@ func DeleteScript(c *gin.Context) {
 		return
 	}
 	response.Success(c)
+}
+
+func GetScriptByID(c *gin.Context) {
+	s := model.Script{}
+	if err := c.BindJSON(&s); err != nil {
+		response.FailWithReason(c, bindJsonFail(err))
+		return
+	}
+	if s.ID <= 0 {
+		response.FailWithReason(c, "请输入脚本ID")
+		return
+	}
+
+	if err := s.GetByID(); err != nil {
+		slog.Error(fmt.Sprintf("根据ID获取脚本信息失败：%v", err))
+		response.FailWithReason(c, bindJsonFail(err))
+		return
+	}
+	response.SuccessWithData(c, s)
 }

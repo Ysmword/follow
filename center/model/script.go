@@ -40,8 +40,15 @@ func (s *Script) Check() error {
 }
 
 // GetByID 根据ID获取脚本
-func (s *Script) GetByID() (script Script, err error) {
-	return script, err
+func (s *Script) GetByID() error {
+	cursor, err := getDB()
+	if err != nil {
+		return err
+	}
+	if cursor.Where("id=?", s.ID).Find(s).Error != nil {
+		return fmt.Errorf("find failed: %v", err)
+	}
+	return err
 }
 
 // GetByUsername 获取用户名下的脚本
@@ -66,14 +73,25 @@ func (s *Script) Delete() error {
 	return cursor.Delete("id=?", s.ID).Error
 }
 
-// Create 创建脚本
-func (s *Script) Create() error {
+// Create 创建脚本或者更新脚本
+func (s *Script) CreateOrUpdate() error {
 	cursor, err := getDB()
 	if err != nil {
 		return err
 	}
+	// var tempScript Script
+	// err = cursor.Where("id=?", s.ID).Find(&tempScript).Error
+	// if err != nil && err == gorm.ErrRecordNotFound {
+	// 	if err = cursor.Create(s).Error; err != nil {
+	// 		return err
+	// 	}
+	// 	return nil
+	// }
+	// if err != nil {
+	// 	return err
+	// }
 
-	return cursor.Create(s).Error
+	return cursor.Where("id=?", s.ID).Save(s).Error
 }
 
 // Update 更新脚本

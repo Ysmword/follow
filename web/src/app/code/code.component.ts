@@ -14,6 +14,8 @@ import { script } from '../../class/script';
 import { response } from '../../class/response';
 import { NzNotificationModule, NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
+import { ActivatedRoute } from '@angular/router';
+import { NzMessageModule, NzMessageService } from 'ng-zorro-antd/message';
 
 
 @Component({
@@ -31,7 +33,8 @@ import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
     NzGridModule,
     ReactiveFormsModule,
     NzNotificationModule,
-    NzModalModule
+    NzModalModule,
+    NzMessageModule
   ],
   templateUrl: './code.component.html',
   styleUrl: './code.component.css'
@@ -43,6 +46,8 @@ export class CodeComponent {
     private fb: NonNullableFormBuilder,
     private notification:NzNotificationService,
     private modal: NzModalService,
+    private router:ActivatedRoute,
+    private message:NzMessageService,
   ) {
     this.script = this.fb.group({
       name: ["", [Validators.required]],
@@ -53,7 +58,7 @@ export class CodeComponent {
 import "fmt"
       
 func main(){
-  fmt.Println("test")
+  fmt.Println("test1")
 }`, [Validators.required]],
       cycle: [60, [Validators.min(60)]],
       status: [false],
@@ -61,9 +66,37 @@ func main(){
     });
   }
 
+  ngOnInit(): void {
+    this.router.params.subscribe(params => {
+      const scriptID = parseInt(params["id"]);
+      this.action = params["action"];
+      if(isNaN(scriptID)){
+        return;
+      }
+      this.scriptID = scriptID;
+      this.scriptService.getScriptByID(this.scriptID).subscribe((r:response) =>{
+        if (r.status != 0){
+          this.notification.error("系统bug",r.msg);
+          return;
+        }
+        this.script.reset({
+          name:r.data.name,
+          type:r.data.type,
+          languageType:r.data.language,
+          content:r.data.code,
+          cycle:r.data.cycle,
+          status:r.data.status,
+          description:r.data.description
+        })
+      })
+    })
+  }
+
   username:string="ysm"   // 等实现登陆后获取
   scriptTypes = ['影视', '书籍'];  // 脚本类型
   languageTypes = ["go"] // 语言类型
+  scriptID?:number;
+  action?:string;
   script: FormGroup<{
     name: FormControl<string>;
     type: FormControl<string>;
@@ -97,7 +130,7 @@ func main(){
     mode: "go",          //定义mode
   }
 
-  addScript() {
+  auScript() {
     var name:string;
     var type:string;
     var code:string;
@@ -168,12 +201,20 @@ func main(){
       language:language,
       cycle:cycle
     }
-    this.scriptService.addScript(s).subscribe((r:response)=>{
+
+    if(this.scriptID !== undefined){
+        s.id = this.scriptID;
+    }
+    this.scriptService.auScript(s).subscribe((r:response)=>{
       if (r.status!==0){
         this.notification.error("新增爬虫脚本失败",r.msg);
         return;
       }
-      this.notification.info("新增爬虫脚本成功","");
+      if(this.action===undefined){
+        this.message.info("新增成功");
+        return
+      }
+      this.message.info("更新成功");
     });
   }
 

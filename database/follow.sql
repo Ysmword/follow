@@ -20,7 +20,7 @@ create table script (
     name varchar(50) not null unique ,
     type varchar(50) not null,
     language varchar(50) not null,
-    Code varchar(150) not null,
+    code varchar(150) not null,
     cycle int default 360,
     status bool default false,
     create_time bigint not null,

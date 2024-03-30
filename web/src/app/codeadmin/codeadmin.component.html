@@ -22,7 +22,7 @@
         <td>{{ data.status }}</td>
         <td>{{ data.description }}</td>
         <td>
-          <a style="margin-right: 10px;">修改</a>
+          <a style="margin-right: 10px;" (click)="updateScript(data.id)">修改</a>
           <a nz-popconfirm nzPopconfirmTitle="确定删除吗?" (nzOnConfirm)="delScript(data.id)">删除</a>
         </td>
       </tr>
