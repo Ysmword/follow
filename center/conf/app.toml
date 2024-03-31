@@ -20,3 +20,7 @@ port="3306"
 dbName="follow"
 runMode="debug"
 
+[script_file]
+addr="scripts"
+runFilename="run"
+

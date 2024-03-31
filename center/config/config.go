@@ -10,6 +10,7 @@ import (
 	"fmt"
 
 	"github.com/BurntSushi/toml"
+
 	"github.com/follow/model"
 )
 
@@ -22,9 +23,10 @@ var (
 )
 
 type Config struct {
-	Log    LogConfig
-	Server ServerConfig
-	Mysql  model.MysqlConfig
+	Log        LogConfig
+	Server     ServerConfig
+	Mysql      model.MysqlConfig
+	ScriptFile model.ScriptFileAddr `toml:"script_file"`
 }
 
 type LogConfig struct {
@@ -55,6 +57,10 @@ func LoadConfig(filePath string) error {
 
 	if err := c.Mysql.Check(); err != nil {
 		return fmt.Errorf("check mysql config failed: %w", err)
+	}
+
+	if err := c.ScriptFile.Check(); err != nil {
+		return fmt.Errorf("check script file addr failed: %w", err)
 	}
 
 	appConf = &c
@@ -103,4 +109,12 @@ func GetMysqlConfig() (model.MysqlConfig, error) {
 		return model.MysqlConfig{}, ErrNotInitialized
 	}
 	return appConf.Mysql, nil
+}
+
+func GetScriptFileAddr() (model.ScriptFileAddr, error) {
+	if appConf == nil {
+		return model.ScriptFileAddr{}, ErrNotInitialized
+	}
+
+	return appConf.ScriptFile, nil
 }

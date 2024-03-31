@@ -8,6 +8,7 @@ import (
 	"path"
 
 	"github.com/follow/config"
+	"github.com/follow/cron"
 	"github.com/follow/model"
 	"github.com/follow/router"
 	"github.com/follow/utils/log"
@@ -52,6 +53,17 @@ func main() {
 	}
 	if err := model.InitMysql(mc); err != nil {
 		fmt.Println("init mysql failed:", err)
+		return
+	}
+
+	// 初始化任务管理
+	ScriptFileAddr, err := config.GetScriptFileAddr()
+	if err != nil {
+		fmt.Println("get script file addr failed", err)
+		return
+	}
+	if err := cron.InitCron(ScriptFileAddr); err != nil {
+		fmt.Println("init cron failed", err)
 		return
 	}
 

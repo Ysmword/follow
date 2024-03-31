@@ -14,7 +14,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 
+	"github.com/follow/config"
+	"github.com/follow/cron"
 	"github.com/follow/model"
+	"github.com/follow/utils/file"
 	"github.com/follow/utils/response"
 	"github.com/follow/utils/times"
 )
@@ -55,6 +58,28 @@ func AuScript(c *gin.Context) {
 		return
 	}
 
+	if !s.Status {
+		sfa, err := config.GetScriptFileAddr()
+		if err != nil {
+			response.FailWithReason(c, fmt.Sprintf("获取脚本地址失败：%v", err))
+			return
+		}
+		if err := s.Build(sfa); err != nil {
+			response.FailWithReason(c, fmt.Sprintf("编译失败%v", err))
+			return
+		}
+		spec := fmt.Sprintf("*/%d * * * *", s.Cycle)
+		entryID, err := cron.RegistrateTask(spec, s.RunShell, cron.SetTaskName(s.Username, s.Name))
+		if err != nil {
+			slog.Error(fmt.Sprintf("registrate task failed: %v", err))
+			return
+		}
+		s.CronID = entryID
+	} else {
+		// 删除任务
+		cron.RemoveTask(cron.SetTaskName(s.Username, s.Name))
+	}
+
 	if err := s.CreateOrUpdate(); err != nil {
 		response.FailWithReason(c, fmt.Sprintf("创建或更新脚本失败：%v", err))
 		return
@@ -72,7 +97,7 @@ func RunDebug(c *gin.Context) {
 	}
 
 	tempFile := fmt.Sprintf("%s_temp_%d.go", s.Username, times.GetCurTimeInt())
-	if err := writeFile(tempFile, []byte(s.Code)); err != nil {
+	if err := file.WriteFile(tempFile, []byte(s.Code)); err != nil {
 		slog.Error(fmt.Sprintf("创建文件失败：%v", err))
 		response.FailWithReason(c, "系统出现bug，请联系RD进行处理")
 		return
@@ -90,16 +115,6 @@ func RunDebug(c *gin.Context) {
 	if err := os.Remove(tempFile); err != nil {
 		slog.Error(fmt.Sprintf("删除脚本失败：%v", err))
 	}
-}
-
-func writeFile(filename string, data []byte) error {
-	file, err := os.Create(filename)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-	_, err = file.Write(data)
-	return err
 }
 
 func DeleteScript(c *gin.Context) {
