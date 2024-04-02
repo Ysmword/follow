@@ -54,6 +54,11 @@ func initRouter() (*gin.Engine, error) {
 	router.PUT("/delScript", controller.DeleteScript)
 	router.POST("/getScriptByID", controller.GetScriptByID)
 
+	// result
+	router.GET("/getAllResult", controller.GetAllResult)
+	router.POST("/getResultByU", controller.GetResultByU)
+	router.POST("/getResultByUT", controller.GetResultByUT)
+
 	return router, nil
 }
 

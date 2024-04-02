@@ -58,7 +58,7 @@ func AuScript(c *gin.Context) {
 		return
 	}
 
-	if !s.Status {
+	if s.Status {
 		sfa, err := config.GetScriptFileAddr()
 		if err != nil {
 			response.FailWithReason(c, fmt.Sprintf("获取脚本地址失败：%v", err))

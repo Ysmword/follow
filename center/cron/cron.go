@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 	"os/exec"
+	"strings"
 	"sync"
 	"sync/atomic"
 
@@ -12,6 +13,7 @@ import (
 
 	"github.com/follow/model"
 	"github.com/follow/utils/dir"
+	"github.com/follow/utils/times"
 )
 
 var (
@@ -45,6 +47,20 @@ func RegistrateTask(spec, shell, taskName string) (cron.EntryID, error) {
 		}
 		// out 回存储到数据库，目前只是打印
 		slog.Info(fmt.Sprintf("run task [%s] result: %v", taskName, string(out)))
+
+		u, s := getUS(taskName)
+		r := model.Result{
+			ScriptName: s,
+			Username:   u,
+			Content:    string(out),
+			Image:      "https://pic.netbian.com/uploads/allimg/240322/233416-1711121656e5bd.jpg",
+			Link:       "https://pic.netbian.com/uploads/allimg/240322/233416-1711121656e5bd.jpg",
+			Header:     "test",
+			CreateTime: times.GetCurTimeInt(),
+		}
+		if err := r.Create(); err != nil {
+			slog.Error(fmt.Sprintf("create failed: %v", err))
+		}
 	})
 
 	if err != nil {
@@ -70,6 +86,14 @@ func RemoveTask(taskName string) error {
 		return ErrNotInitialization
 	}
 	c.Remove(id) // 简单处理
+
+	tLock.Lock()
+	_, ok = rTask[taskName]
+	if ok {
+		delete(rTask, taskName)
+	}
+	defer tLock.Unlock()
+
 	return nil
 }
 
@@ -116,6 +140,8 @@ func InitCron(sfa model.ScriptFileAddr) error {
 	}
 
 	wg.Wait()
+
+	fmt.Println("this is a test:", rTask)
 	for _, script := range rsScripts {
 		if err := script.CreateOrUpdate(); err != nil {
 			slog.Error(fmt.Sprintf("update script failed: %v", err)) // 简单处理，只打印错误日志
@@ -126,4 +152,9 @@ func InitCron(sfa model.ScriptFileAddr) error {
 
 func SetTaskName(username, scriptName string) string {
 	return username + "|" + scriptName
+}
+
+func getUS(taskName string) (string, string) {
+	item := strings.Split(taskName, "|")
+	return item[0], item[1]
 }

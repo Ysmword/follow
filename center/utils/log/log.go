@@ -31,7 +31,9 @@ func InitLog(filename string, level int, maxSize int, maxBackups int, maxAge int
 		LocalTime:  true,
 		Compress:   false,
 	}
-	logger := slog.New(slog.NewJSONHandler(log, nil))
+	logger := slog.New(slog.NewJSONHandler(log, &slog.HandlerOptions{
+		AddSource: true, // 显示文件信息
+	}))
 	slog.SetDefault(logger)
 	slog.SetLogLoggerLevel(logLevel(level))
 	slog.Info("初始化日志成功")
