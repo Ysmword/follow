@@ -32,6 +32,8 @@ func GetResultByU(c *gin.Context) {
 		response.FailWithReason(c, "用户名必填")
 		return
 	}
+
+	
 	results, err := r.GetByUsername()
 	if err != nil {
 		slog.Error(fmt.Sprintf("get result by username [%s] failed: %v", r.Username, err))

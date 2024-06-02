@@ -1,4 +1,8 @@
 import router from '@ohos.router'
+import result from '../../viewmodel/result'
+import http from '@ohos.net.http';
+import ResultModel from '../../model/ResultModel'
+
 
 // 后端传递参数格式
 class item {
@@ -19,19 +23,24 @@ class item {
 struct Index {
 
   // 构造简单数据
-  private items:Array<item> = [
-    new item("动漫1",$r("app.media.mei"),"这个动漫女生美吗？"),
-    new item("动漫2",$r("app.media.mei"),"这个动漫女生美吗？"),
-    new item("动漫3",$r("app.media.mei"),"这个动漫女生美吗？"),
-    new item("动漫4",$r("app.media.mei"),"这个动漫女生美吗？"),
-    new item("动漫5",$r("app.media.mei"),"这个动漫女生美吗？"),
-    new item("动漫6",$r("app.media.mei"),"这个动漫女生美吗？"),
-    new item("动漫7",$r("app.media.mei"),"这个动漫女生美吗？"),
-    new item("动漫8",$r("app.media.mei"),"这个动漫女生美吗？"),
-    new item("动漫9",$r("app.media.mei"),"这个动漫女生美吗？"),
-    new item("动漫10",$r("app.media.mei"),"这个动漫女生美吗？"),
-    new item("动漫11",$r("app.media.mei"),"这个动漫女生美吗？")
-  ]
+  // private items:Array<item> = [
+  //   new item("动漫1",$r("app.media.mei"),"这个动漫女生美吗？"),
+  //   new item("动漫2",$r("app.media.mei"),"这个动漫女生美吗？"),
+  //   new item("动漫3",$r("app.media.mei"),"这个动漫女生美吗？"),
+  //   new item("动漫4",$r("app.media.mei"),"这个动漫女生美吗？"),
+  //   new item("动漫5",$r("app.media.mei"),"这个动漫女生美吗？"),
+  //   new item("动漫6",$r("app.media.mei"),"这个动漫女生美吗？"),
+  //   new item("动漫7",$r("app.media.mei"),"这个动漫女生美吗？"),
+  //   new item("动漫8",$r("app.media.mei"),"这个动漫女生美吗？"),
+  //   new item("动漫9",$r("app.media.mei"),"这个动漫女生美吗？"),
+  //   new item("动漫10",$r("app.media.mei"),"这个动漫女生美吗？"),
+  //   new item("动漫11",$r("app.media.mei"),"这个动漫女生美吗？")
+  // ]
+
+  @State results: result[] = []
+  aboutToAppear(){
+    this.loadResults()
+  }
 
   @Builder
   SubMenu() {
@@ -72,7 +81,7 @@ struct Index {
 
 
       List({space:10}){
-        ForEach(this.items,(item:item)=>{
+        ForEach(this.results,(item:item)=>{
           ListItem(){
             Row(){
               Image(item.image).width("150")
@@ -118,5 +127,41 @@ struct Index {
       .backgroundColor(Color.Black)
       .padding(10)
     }.width("100%")
+  }
+
+
+  loadResults(){
+    this.getResults()
+      .then(results => {
+        this.results = results;
+        console.log("this is a test",JSON.stringify(this.results));
+      })
+  }
+
+  getResults():Promise<result[]>{
+    return new Promise((resolve,reject)=>{
+      let urlPath = "http://localhost:8080/getAllResult?username=follow&pwd=follow@123456"
+      let httpRequest = http.createHttp()
+      httpRequest.request(
+        urlPath,
+        {
+          method:http.RequestMethod.GET,
+          header:{
+            'Content-Type': 'application/json',
+          }
+        },
+      ).then(resp => {
+        if(resp.responseCode === 200){
+          console.log("查询成功");
+          resolve(JSON.parse(resp.result.toString()))
+        }else{
+          console.log("查询失败，error:",JSON.stringify(resp));
+          reject("查询失败")
+        }
+      })
+        .catch(error => {
+          console.log("查询爬虫结果失败！error:",JSON.stringify(error));
+        })
+    })
   }
 }

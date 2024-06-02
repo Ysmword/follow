@@ -1,0 +1,39 @@
+<nz-list nzItemLayout="vertical">
+    @for (item of results; track item) {
+      <nz-list-item>
+        <nz-list-item-meta>
+          <nz-list-item-meta-avatar [nzSrc]="item.image"></nz-list-item-meta-avatar>
+          <nz-list-item-meta-title>
+            <a href="{{ item.link }}">{{ item.header }}</a>
+          </nz-list-item-meta-title>
+          <nz-list-item-meta-description>
+            {{ item.content }}
+          </nz-list-item-meta-description>
+        </nz-list-item-meta>
+        {{ item.content }}
+        <ul nz-list-item-actions>
+          <nz-list-item-action>
+            <span nz-icon nzType="star-o" style="margin-right: 8px;"></span>
+            156
+          </nz-list-item-action>
+          <nz-list-item-action>
+            <span nz-icon nzType="star-o" style="margin-right: 8px;"></span>
+            156
+          </nz-list-item-action>
+          <nz-list-item-action>
+            <span nz-icon nzType="star-o" style="margin-right: 8px;"></span>
+            2
+          </nz-list-item-action>
+        </ul>
+        <nz-list-item-extra>
+            <img width="272" alt="logo" [src]=item.image />
+        </nz-list-item-extra>
+      </nz-list-item>
+    }
+
+    <div class="loadmore" nz-list-load-more>
+        @if (!loadingMore) {
+          <button nz-button (click)="onLoadMore()">loading more</button>
+        }
+    </div>
+</nz-list>

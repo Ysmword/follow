@@ -8,7 +8,6 @@ import (
 	"path"
 
 	"github.com/follow/config"
-	"github.com/follow/cron"
 	"github.com/follow/model"
 	"github.com/follow/router"
 	"github.com/follow/utils/log"
@@ -43,6 +42,7 @@ func main() {
 		fmt.Println("get log config failed:", err)
 		return
 	}
+	
 	log.InitLog(lc.FileName, lc.Level, lc.MaxSize, lc.MaxBackups, lc.MaxAge)
 
 	// 初始化mysql数据库
@@ -57,15 +57,15 @@ func main() {
 	}
 
 	// 初始化任务管理
-	ScriptFileAddr, err := config.GetScriptFileAddr()
-	if err != nil {
-		fmt.Println("get script file addr failed", err)
-		return
-	}
-	if err := cron.InitCron(ScriptFileAddr); err != nil {
-		fmt.Println("init cron failed", err)
-		return
-	}
+	// ScriptFileAddr, err := config.GetScriptFileAddr()
+	// if err != nil {
+	// 	fmt.Println("get script file addr failed", err)
+	// 	return
+	// }
+	// if err := cron.InitCron(ScriptFileAddr); err != nil {
+	// 	fmt.Println("init cron failed", err)
+	// 	return
+	// }
 
 	// 初始化server
 	sc, err := config.GetServerConfig()
