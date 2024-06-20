@@ -17,6 +17,7 @@ export class ResultComponent {
   results:result[]=[];
   username:string="ysm"   // 等实现登陆后获取
   loadingMore = false;
+  page:number=1;
 
   constructor(
     private resultService:ResultService,
@@ -24,18 +25,25 @@ export class ResultComponent {
   ){}
 
   ngOnInit(): void {
-    this.getAllResultByUser()
+    this.getAllResultByUser(this.page)
   }
 
-  getAllResultByUser(){
-    this.resultService.getResultByU(this.username).subscribe((r:response)=>{
+  getAllResultByUser(page:number){
+    this.resultService.getResultByU(this.username,page).subscribe((r:response)=>{
       if(r.status!==0){
         this.notification.error("获取结果失败",r.msg);
         return;
       }
-      this.results=r.data
+      if (r.data.length=== 0){
+        this.loadingMore = false;
+        return;
+      }
+      this.results = [...this.results,...r.data]
     })
   }
 
-  onLoadMore(){}
+  onLoadMore(){
+    this.page = this.page+1;
+    this.getAllResultByUser(this.page)
+  }
 }

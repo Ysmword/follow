@@ -15,7 +15,7 @@ export class ResultService {
 
 
   private getAllResultApi:string = "/api/getAllResult?username=follow&pwd=follow@123456"
-  private getResultByUApi:string = "/api/getResultByU?username=follow&pwd=follow@123456"
+  private getResultByUApi:string = "/api/getResultByU?username=follow&pwd=follow@123456&page="
   private getResultByUTApi:string= "/api/getResultByUT?username=follow&pwd=follow@123456"
 
   private httpOptions ={
@@ -37,9 +37,11 @@ export class ResultService {
     )
   }
 
-  getResultByU(username:string){
+  getResultByU(username:string,page:number){
+    var api = this.getResultByUApi + page.toString()
+    console.log(api)
     const r:result={username:username}
-    return this.http.post<response>(this.getResultByUApi,r,this.httpOptions).pipe(
+    return this.http.post<response>(api,r,this.httpOptions).pipe(
       catchError(this.handleError)
     )
   }

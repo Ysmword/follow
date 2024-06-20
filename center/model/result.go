@@ -2,6 +2,10 @@ package model
 
 import "fmt"
 
+const (
+	defaultPageSize = 10
+)
+
 // Result 爬虫结果
 type Result struct {
 	ID         int64  `json:"id" gorm:"primaryKey"`
@@ -27,13 +31,13 @@ func (r *Result) GetAll() ([]Result, error) {
 	return all, nil
 }
 
-func (r *Result) GetByUsername() ([]Result, error) {
+func (r *Result) GetByUsername(page int) ([]Result, error) {
 	cursor, err := getDB()
 	if err != nil {
 		return nil, err
 	}
 	all := make([]Result, 0)
-	if err := cursor.Where("username=?", r.Username).Limit(10).Find(&all).Error; err != nil {
+	if err := cursor.Where("username=?", r.Username).Limit(defaultPageSize).Offset((page - 1) * defaultPageSize).Find(&all).Error; err != nil {
 		return nil, fmt.Errorf("find failed: %w", err)
 	}
 	return all, nil

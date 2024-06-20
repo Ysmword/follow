@@ -1,10 +1,16 @@
-
-
 .logo {
-    height: 32px;
-    background: rgba(255, 255, 255, 0.2);
-    margin: 16px;
-    text-align: center;
+    height: 64px;
+    overflow: hidden;
+    /* 确保图片不会溢出div容器 */
+}
+
+.div-container img {
+    width: 100%;
+    /* 使图片宽度铺满div */
+    height: 100%;
+    /* 使图片高度铺满div */
+    object-fit: cover;
+    /* 裁剪并覆盖在容器内 */
 }
 
 .layout {

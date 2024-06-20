@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"log/slog"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 
@@ -33,8 +34,14 @@ func GetResultByU(c *gin.Context) {
 		return
 	}
 
-	
-	results, err := r.GetByUsername()
+	pageStr := c.Query("page")
+	page, err := strconv.Atoi(pageStr)
+	if err != nil {
+		response.FailWithReason(c, fmt.Sprintf("page:%s预期是数字", pageStr))
+		return
+	}
+	slog.Error(fmt.Sprintf("page:%d", page))
+	results, err := r.GetByUsername(page)
 	if err != nil {
 		slog.Error(fmt.Sprintf("get result by username [%s] failed: %v", r.Username, err))
 		response.FailWithReason(c, "根据用户名获取失败")
