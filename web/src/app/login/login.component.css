@@ -1,0 +1,48 @@
+.body {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(#141e30, #243b55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    color: #03e9f4;
+}
+
+.loginBox {
+    width: 400px;
+    height: 364px;
+    background-color: #0c1622;
+    margin: 100px auto;
+    border-radius: 10px;
+    box-shadow: 0 15px 25px 0 rgba(0, 0, 0, .6);
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.title {
+    text-align: center;
+    color: aliceblue;
+    margin-bottom: 30px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.login-form {
+    max-width: 300px;
+}
+
+.login-form-margin {
+    margin-bottom: 16px;
+}
+
+.login-form-forgot {
+    float: right;
+}
+
+.login-form-button {
+    width: 100%;
+}
+
+.login-form-remember{
+    color: #03e9f4;
+}

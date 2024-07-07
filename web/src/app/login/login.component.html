@@ -1,0 +1,32 @@
+<div class="body">
+    <div class="loginBox">
+        <h2 class="title">登录</h2>
+        <form nz-form [formGroup]="userInfo" class="login-form" (ngSubmit)="submitForm()">
+            <nz-form-item>
+              <nz-form-control nzErrorTip="Please input your username!">
+                <nz-input-group>
+                  <input type="text" nz-input formControlName="userName" placeholder="用户名" />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-control nzErrorTip="Please input your Password!">
+                <nz-input-group>
+                  <input type="password" nz-input formControlName="password" placeholder="密码" />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+            <div nz-row class="login-form-margin">
+              <div nz-col [nzSpan]="12">
+                <label nz-checkbox formControlName="remember">
+                  <span style="color: #1890ff;">记住我</span>
+                </label>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <a class="login-form-forgot">忘记密码</a>
+              </div>
+            </div>
+            <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
+          </form>
+    </div>
+</div>

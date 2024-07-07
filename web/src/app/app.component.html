@@ -1,19 +1,20 @@
 
-<nz-layout class="layout">
+<app-login (childEvent)="receiveChildEvent($event)" *ngIf="!this.isLogined"></app-login>
+
+<nz-layout *ngIf="this.isLogined" class="layout">
   <nz-sider>
-    <div class="logo">
-      <img src="https://pic.netbian.com/uploads/allimg/240618/200512-1718712312b4e0.jpg"/></div>
+    <div class="logo">follow</div>
     <ul nz-menu nzTheme="dark" nzMode="inline">
       <li nz-menu-item routerLink="/code" routerLinkActive="active">
-        <span nz-icon nzType="file"></span>
+        <!-- <span nz-icon nzType="file"></span> -->
         <span>爬虫代码</span>
       </li>
       <li nz-menu-item routerLink="/codeadmin" routerLinkActive="active">
-        <span nz-icon nzType="file"></span>
+        <!-- <span nz-icon nzType="file"></span> -->
           <span>代码管理</span>
       </li>
       <li nz-menu-item routerLink="/result" routerLinkActive="active">
-        <span nz-icon nzType="file"></span>
+        <!-- <span nz-icon nzType="file"></span> -->
           <span>爬虫结果</span>
       </li>
     </ul>
@@ -26,5 +27,4 @@
     <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
   </nz-layout>
 </nz-layout>
-
 

@@ -1,7 +1,13 @@
 .logo {
-    height: 64px;
-    overflow: hidden;
-    /* 确保图片不会溢出div容器 */
+    height: 32px;
+    margin: 16px;
+    background: rgba(255, 255, 255, 0.3);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 16;
 }
 
 .div-container img {
