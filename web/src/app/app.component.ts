@@ -25,7 +25,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'web';
+  title = 'follow';
   isLogined:boolean=false;
 
   receiveChildEvent(event: boolean) {
