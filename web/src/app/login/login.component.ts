@@ -8,7 +8,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { user } from '../../class/user';
 import { UserService } from '../services/user.service';
 import { response } from '../../class/response';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import { ActivatedRoute, Router } from '@angular/router';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +27,6 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-
   userInfo: FormGroup<{
     userName: FormControl<string>;
     password: FormControl<string>;
@@ -36,7 +36,8 @@ export class LoginComponent {
     password: ['', [Validators.required]],
     remember: [true]
   });
-  @Output() childEvent = new EventEmitter<boolean>();
+
+  private returnUrl:Observable<string|null>;;
 
   submitForm(): void {
     if (this.userInfo.valid) {
@@ -45,13 +46,13 @@ export class LoginComponent {
         password:this.userInfo.value.password
       }
       this.userServce.isLogin(u).subscribe((r:response)=>{
-        console.log(u,r)
-        if (r.status!=0){
-          this.message.error(r.msg);
-        }else{
-          this.message.info(r.msg);
-          this.sendToParent()
-        }
+          if (r.status==0){
+            this.returnUrl.subscribe((r:string|null)=>{
+                if (r!=null){
+                  this.router.navigate([r]);
+                }
+            })
+          }
       })
     } else {
       Object.values(this.userInfo.controls).forEach(control => {
@@ -62,15 +63,14 @@ export class LoginComponent {
       });
     }
   }
- 
-  sendToParent() {
-    this.childEvent.emit(true);
-  }
 
 
   constructor(
     private fb: NonNullableFormBuilder,
     private userServce:UserService,
-    private message:NzMessageService,
-    ) {}
+    private activatedRoute:ActivatedRoute,
+    private router:Router
+    ) {
+      this.returnUrl = this.activatedRoute.queryParamMap.pipe(map(params => params.get('returnUrl')));
+    }
 }

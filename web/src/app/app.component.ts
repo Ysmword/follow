@@ -26,19 +26,18 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent {
   title = 'follow';
-  isLogined:boolean=false;
+  // isLogined:boolean=false;
+  // receiveChildEvent(event: boolean) {
+  //   this.isLogined = event;
+  //   localStorage.setItem('isLoggedIn', 'true');
+  //   localStorage.setItem('loginTime', new Date().getTime().toString());
+  // }
 
-  receiveChildEvent(event: boolean) {
-    this.isLogined = event;
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('loginTime', new Date().getTime().toString());
-  }
-
-  constructor(
-  ){
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    const loginTime = parseInt(localStorage.getItem('loginTime') || '0', 10);
-    const currentTime = new Date().getTime();
-    this.isLogined= isLoggedIn === 'true' && currentTime - loginTime < 600;
-  }
+  // constructor(
+  // ){
+  //   const isLoggedIn = localStorage.getItem('isLoggedIn');
+  //   const loginTime = parseInt(localStorage.getItem('loginTime') || '0', 10);
+  //   const currentTime = new Date().getTime();
+  //   this.isLogined= isLoggedIn === 'true' && currentTime - loginTime < 600;
+  // }
 }

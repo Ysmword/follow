@@ -39,7 +39,6 @@ export class ResultService {
 
   getResultByU(username:string,page:number){
     var api = this.getResultByUApi + page.toString()
-    console.log(api)
     const r:result={username:username}
     return this.http.post<response>(api,r,this.httpOptions).pipe(
       catchError(this.handleError)
