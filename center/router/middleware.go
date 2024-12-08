@@ -12,8 +12,6 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-
-	"github.com/follow/utils/response"
 )
 
 // 硬编码权限验证
@@ -49,12 +47,12 @@ func setLogFormat() gin.HandlerFunc {
 }
 
 func auth(c *gin.Context) {
-	u := c.Query("username")
-	p := c.Query("pwd")
-	if u != username || p != password {
-		c.Abort()
-		response.FailWithReason(c, "权限验证失败")
-	}
+	// u := c.Query("username")
+	// p := c.Query("pwd")
+	// if u != username || p != password {
+	// 	c.Abort()
+	// 	response.FailWithReason(c, "权限验证失败")
+	// }
 	c.Next()
 }
 
